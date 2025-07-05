@@ -1,18 +1,6 @@
-rootProject.name = 'Grace.Data'
+rootProject.name = 'Grace.Data.Reactive'
 
-include ("grace-datastore-core",
-        "grace-datastore-web",
-
-        // Core GORM Implementation projects
-        'grace-datastore-gorm',
-        'grace-datastore-async',
-        'grace-datastore-gorm-async',
-        'grace-datastore-gorm-validation',
-        'grace-datastore-gorm-support',
-        'grace-datastore-gorm-tck',
-        'grace-datastore-gorm-test',
-
-
-        // RX projects
-        'grace-datastore-gorm-rx'
+include (
+    // RX projects
+    'grace-datastore-gorm-rx'
 )
