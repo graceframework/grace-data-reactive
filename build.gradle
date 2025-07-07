@@ -33,6 +33,18 @@ allprojects {
             maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
         }
     }
+    configurations {
+        all {
+            resolutionStrategy {
+                eachDependency { DependencyResolveDetails details ->
+                    // Force using a fixed version for all libraries with 'org.apache.groovy' group
+                    if (details.requested.group == 'org.apache.groovy') {
+                        details.useVersion groovyVersion
+                    }
+                }
+            }
+        }
+    }
 }
 
 subprojects {
