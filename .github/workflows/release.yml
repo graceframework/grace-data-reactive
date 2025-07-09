@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   create_draft_release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -24,7 +24,7 @@ jobs:
             ${{ github.ref_name }}
   release_and_publish:
     needs: create_draft_release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java: ['17']
@@ -53,6 +53,17 @@ jobs:
       - name: Set the current release version
         id: release_version
         run: echo "release_version=${GITHUB_REF:11}" >> $GITHUB_OUTPUT
+      - name: Generate Docs
+        id: build
+        run: ./gradlew docs
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: rainboyan/deploy-github-pages@v1.1.0
+        env:
+          VERSION: ${{ steps.release_version.outputs.release_version }}
+          TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build/docs
       - name: Generate secring file
         id: secring
         env:
