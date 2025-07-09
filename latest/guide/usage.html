@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2 Usage 2023.0.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Reactive</h1>
+            <h3 class="docSubTitle">Support using GORM with RxJava</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/usage.html"><strong>2</strong><span>Usage</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/support.html"><strong>3</strong><span>Support</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li>
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/support.html"><strong>3</strong><span>Support</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2 Usage</h1>
+
+                    <p><strong>Version:</strong> 2023.0.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h1 id="usage"><a class="anchor" href="#usage"></a>2 Usage</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/grace-plugins/grace-inertia/edit/main/docs/guide/usage.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use the RxJava support you need to ensure that the <code>grace-datastore-gorm-rx</code> dependencies is on the classpath by adding the following to <code>build.gradle</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">implementation "org.graceframework:grace-datastore-gorm-rx:2023.0.0-SNAPSHOT"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   Single&lt;<span class="predefined-type">Book</span>&gt; findOne(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When a <code>rx.Single</code> is used then a single result is returned. To query multiple results use an <code>rx.Observable</code> instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="predefined-type">Observable</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For regular GORM entities, GORM will by default execute the persistence operation using RxJava&#8217;s <a href="https://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html#io()">IO Scheduler</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For RxGORM entities where the underlying database supports non-blocking access the database driver will schedule the operation accordingly.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can run the operation on a different scheduler using the <code>RxSchedule</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.rx.services.RxSchedule</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.services.Service</span>
+<span class="keyword">import</span> <span class="include">rx.schedulers.Schedulers</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+
+   <span class="annotation">@RxSchedule</span>(scheduler = { Schedulers.newThread() })
+   <span class="predefined-type">Observable</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/support.html"><strong>3</strong><span>Support</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
