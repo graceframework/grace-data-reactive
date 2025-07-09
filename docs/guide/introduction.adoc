@@ -1,0 +1,3 @@
+GORM Data Services also support returning RxJava 1.x https://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html[rx.Observable] or https://reactivex.io/RxJava/1.x/javadoc/rx/Single.html[rx.Single] types.
+
+NOTE: RxJava 2.x support is planned for a future release
